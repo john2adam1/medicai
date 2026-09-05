@@ -1,42 +1,85 @@
-# MedicAI Simulation Backend API
+# MedicAI — Professional Medical Simulation Platform
 
-Bu loyiha MedicAI simulyatsiya tizimining backend qismidir. U AI (Gemini) yordamida klinik holatlarni va shifokor xatti-harakatlarini baholovchi API hisoblanadi.
+MedicAI — bu shifokorlar va tibbiyot talabalari uchun sun'iy intellekt (Gemini AI) asosida ishlovchi klinik simulyatsiya platformasi. Loyiha frontend va backend qismlarini bitta toza monorepo tuzilmasida birlashtirgan.
 
-## Ishga Tushirish (Development)
+---
 
-1. **Kutubxonalarni o'rnatish:**
-   ```bash
-   npm install
-   ```
+## 📁 Loyiha Strukturasi (Monorepo)
 
-2. **Environment variable faylini yaratish:**
-   `.env.example` namunasidan foydalanib `.env` faylini yarating va quyidagi o'zgaruvchilarni kiriting:
-   ```env
-   PORT=4002
-   GEMINI_API_KEY=Sizning_Gemini_API_Kalitingiz
-   FRONTEND_URL=http://localhost:3000
-   ```
+```text
+medicai/
+├── frontend/             # Next.js 16 (React 19, TailwindCSS, Zustand, Framer Motion)
+│   ├── src/              # UI komponentlar, sahifalar va do'kon (store)
+│   ├── public/           # Statik resurslar va rasmlar
+│   ├── .env.example      # Frontend muhit o'zgaruvchilari namunasi
+│   └── package.json
+│
+├── backend/              # Express.js API (TypeScript, Gemini 2.5 Flash, Supabase)
+│   ├── src/              # Server logikasi va AI simulyatsiya dvigateli
+│   ├── .env.example      # Backend muhit o'zgaruvchilari namunasi
+│   ├── vercel.json       # Backend deploy konfiguratsiyasi
+│   └── package.json
+│
+├── package.json          # Monorepo boshqaruv scriptlari
+├── .gitignore            # Umumiy ignore qoidalari
+└── README.md
+```
 
-3. **Lokal serverni ishga tushirish:**
-   ```bash
-   npm run dev
-   ```
-   Backend API `http://localhost:4002` (yoki belgilangan PORTda) ishga tushadi.
+---
 
-## Bog'lanish Qo'llanmasi
+## 🚀 Tezkor Ishga Tushirish (Quick Start)
 
-Tizim alohida frontend va backend dan iborat bo'lib, o'zaro veb-so'rovlar (REST API) orqali bog'lanadi. Ularni lokal va jonli (production) holatda qanday sozlash bo'yicha batafsil yo'riqnoma:
-👉 **[Bog'lanish Qo'llanmasi (CORS, Vercel, Local)](./docs/connection_guide.md)**
+### 1. Bog'liqliklarni (Dependencies) O'rnatish
 
-## Loyiha Tuzilishi
+Loyiha ildiz (root) papkasida barcha kerakli paketlarni bitta buyruq bilan o'rnating:
 
-* `/src/index.ts` — API marshrutlari (Express setup, CORS va server ishga tushishi).
-* `/src/lib/ai-engine.ts` — Gemini API integratsiyasi (Scenario yaratish va xatti-harakatlarni baholash).
-* `/src/lib/types.ts` — Loyiha ma'lumotlar turlari (TypeScript types).
-* `/vercel.json` — Vercel-da standalone deploy qilish konfiguratsiyasi.
+```bash
+npm run install:all
+```
 
-## Mavjud API Marshrutlari
+*(Yoki alohida o'rnatish uchun: `npm run install:backend` va `npm run install:frontend`)*
 
-* `POST /api/start` — Yangi ssenariyni generator qiladi.
-* `POST /api/action` — Shifokor xatti-harakatini baholaydi va bemor holatini yangilaydi.
-* `GET /api/health` — API ishlash holatini tekshirish.
+---
+
+### 2. Muhit O'zgaruvchilarini (.env) Sozlash
+
+#### Backend:
+`backend/.env.example` faylidan nusxa olib, `backend/.env` faylini yarating:
+```env
+PORT=4002
+GEMINI_API_KEY=sizning_gemini_api_kalitingiz
+FRONTEND_URL=http://localhost:3000
+```
+
+#### Frontend:
+`frontend/.env.example` faylidan nusxa olib, `frontend/.env.local` faylini yarating:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4002/api
+NEXT_PUBLIC_SUPABASE_URL=sizning_supabase_proyekt_urlingiz
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sizning_supabase_anon_kalitingiz
+```
+
+---
+
+### 3. Serverlarni Ishga Tushirish
+
+Barcha tizimni (ham Frontend, ham Backend) parallel ravishda ishga tushirish uchun:
+
+```bash
+npm run dev
+```
+
+* **Frontend:** [http://localhost:3000](http://localhost:3000)
+* **Backend API:** [http://localhost:4002](http://localhost:4002)
+
+#### Alohida ishga tushirish:
+* **Faqat Frontend:** `npm run dev:frontend` (yoki `npm run dev:front`)
+* **Faqat Backend:** `npm run dev:backend` (yoki `npm run dev:back`)
+
+---
+
+## 🛠 Qo'shimcha Buyruqlar
+
+* `npm run build` — Ham backend, ham frontend loyihalarini build qiladi.
+* `npm run build:backend` — Faqat backend TypeScript kodini compile qiladi.
+* `npm run build:frontend` — Faqat Next.js loyihasini production uchun build qiladi.

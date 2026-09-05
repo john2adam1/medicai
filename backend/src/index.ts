@@ -11,7 +11,7 @@ if (!process.env.GEMINI_API_KEY) {
 }
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4002;
 
 app.use(cors({
     origin: (origin, callback) => {

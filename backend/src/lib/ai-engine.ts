@@ -1,5 +1,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { AIScenario, ActionResult, PatientStats, VisualState } from './types';
+import fs from 'fs';
+import path from 'path';
 
 let _model: ReturnType<InstanceType<typeof GoogleGenerativeAI>['getGenerativeModel']> | null = null;
 
@@ -43,7 +45,11 @@ function parseJSON<T>(text: string): T {
     return JSON.parse(cleaned);
   } catch (err) {
     console.error('Failed to parse JSON. Raw text was:\n', text);
-    require('fs').writeFileSync('D:/projects/medicai-back/ai_error.log', text);
+    try {
+      fs.writeFileSync(path.join(process.cwd(), 'ai_error.log'), text);
+    } catch {
+      // ignore logging failure
+    }
     throw new Error('Failed to parse JSON response from AI');
   }
 }
